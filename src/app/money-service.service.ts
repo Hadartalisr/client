@@ -18,10 +18,12 @@ export class MoneyServiceService {
   ping() : Observable<any> {
     return this.http.get(this.config.server + 'ping').pipe(
       map(x => {
+        console.log(x);
         return x
       })
     );
   }
+
 
   getDates(startDate, endDate) : Observable<any> {
     let start_day = startDate.date.toString();
@@ -34,13 +36,12 @@ export class MoneyServiceService {
     let end_month = endDate.month.toString();
     end_month = end_month.length < 2 ? "0"+end_month : end_month;
     let end_year = endDate.year.toString();
-    //if startDate < 10
-    return this.http.get(this.config.server + 'getDates?startdate=' + start_year+start_month+start_day + '&enddate=' + end_year+end_month+end_day);/*.pipe(
+    return this.http.get(this.config.server + 'getDates?startdate=' + start_year+start_month+start_day + '&enddate=' + end_year+end_month+end_day).pipe(
       map((x : any) => {
         console.log(x);
-        return x.getDatesResults; 
+        return x.getDatesResults;
       })
-    );*/
+    )
   }
 
   

@@ -66,25 +66,26 @@ export class AppComponent  implements OnInit{
     //return " ";
   }
 
+  ping(){
+    this.MoneyService.ping().subscribe();
+  }
+
+
   getDates(){
     this.multi = [];
     this.isLoading = true;
-    this.MoneyService.getDates(this.startDate, this.endDate).subscribe(dates => {
-      dates = dates.getDatesResults;
-      console.log(dates)
-      /*dates.forEach(element => {
+    this.MoneyService.getDates(this.startDate, this.endDate).subscribe(x => {
+      console.log(x)
+      x.forEach(element => {
         element.Datetime = new Date(element.Datetime)
-      });*/
-      dates.forEach(element => {
-        element.Datetime = element.Datetime.toString();
       });
-      this.dates = dates;
+      this.dates = x;
       this.multi.push({
         name: 'issues_maturity_fedsoma_fedinv_mbs_swap',
         series: this.dates.map(x =>{ return {name: x.index , value: x.issues_maturity_fedsoma_fedinv_mbs_swap}})
       })
       console.log(this.multi)
-      
+
     }, error => {
 
     },
@@ -92,6 +93,7 @@ export class AppComponent  implements OnInit{
       this.isLoading = false;
     })
   }
+
 
 }
 

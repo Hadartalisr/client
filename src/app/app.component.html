@@ -1,0 +1,32 @@
+<div style="height: 70px; width: 100%; display: flex; border-bottom: 3px solid black; direction: ltr" >
+    <img src="../assets/pics/logo.jpg" style="height:60px; padding: 5px;">
+    <h1 style="margin-left: 15px;">
+        Investal
+    </h1>
+</div>
+<div class=content style="height: calc(100% - 70px); width: 100%; padding: 10px 20px;"> 
+
+    <div style="height: 200px; width: 100%;">
+        
+        <mat-form-field color="accent" appearance="fill">
+            <mat-label>Inherited calendar color</mat-label>
+            <input matInput [matDatepicker]="picker1">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+
+    </div>
+
+
+    <div style="width: 500px; height: 500px;">
+        
+        <ag-grid-angular
+            style="width: 100%; height: 100%;"
+            class="ag-theme-balham"
+            [rowData]="rowData"
+            [columnDefs]="columnDefs">
+        </ag-grid-angular>  
+
+    </div>
+
+</div>

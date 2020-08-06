@@ -36,8 +36,6 @@ export class AppComponent  implements OnInit{
   };
   autoScale = true;
 
-  // attribures
-  issues_maturity_fedsoma_fedinv_mbs_swap : boolean = true;
 
   constructor(private MoneyService : MoneyServiceService){
   
@@ -82,7 +80,7 @@ export class AppComponent  implements OnInit{
       this.dates = x;
       this.multi.push({
         name: 'issues_maturity_fedsoma_fedinv_mbs_swap',
-        series: this.dates.map(x =>{ return {name: x.index , value: x.issues_maturity_fedsoma_fedinv_mbs_swap}})
+        series: this.dates.filter( x => x.issues_maturity_fedsoma_fedinv_mbs_swap != 0).map(x =>{ return {name: x.index , value: x.issues_maturity_fedsoma_fedinv_mbs_swap}})
       })
       console.log(this.multi)
 
@@ -93,6 +91,99 @@ export class AppComponent  implements OnInit{
       this.isLoading = false;
     })
   }
+
+
+  // those help to show the selected data
+  OpenChange($event){
+    console.log($event);
+    let openChecked : Boolean = $event.checked;
+    if (openChecked){
+      this.multi.push({
+        name: 'Open',
+        series: this.dates.filter( x => x.Open != 0).map(x =>{ return {name: x.index , value: x.Open}})
+      })
+      let newMulti = this.multi;
+      this.multi = [...newMulti];
+    }
+    else {
+      let newMulti = this.multi.filter(x => x.name != 'Open');
+      this.multi = [...newMulti];
+    }
+  }
+
+
+  // those help to show the selected data
+  CloseChange($event){
+    console.log($event);
+    let openChecked : Boolean = $event.checked;
+    if (openChecked){
+      this.multi.push({
+        name: 'Close',
+        series: this.dates.filter( x => x.Close != 0).map(x =>{ return {name: x.index , value: x.Close}})
+      })
+      let newMulti = this.multi;
+      this.multi = [...newMulti];
+    }
+    else {
+      let newMulti = this.multi.filter(x => x.name != 'Close');
+      this.multi = [...newMulti];
+    }
+  }
+
+
+  // those help to show the selected data
+  swap_deltaChange($event){
+    console.log($event);
+    let openChecked : Boolean = $event.checked;
+    if (openChecked){
+      this.multi.push({
+        name: 'swap_delta',
+        series: this.dates.filter( x => x.swap_delta != 0).map(x =>{ return {name: x.index , value: x.swap_delta}})
+      })
+      let newMulti = this.multi;
+      this.multi = [...newMulti];
+    }
+    else {
+      let newMulti = this.multi.filter(x => x.name != 'swap_delta');
+      this.multi = [...newMulti];
+    }
+  }
+  
+  // those help to show the selected data
+  future_swapChange($event){
+    console.log($event);
+    let openChecked : Boolean = $event.checked;
+    if (openChecked){
+      this.multi.push({
+        name: 'future_swap',
+        series: this.dates.filter( x => x.future_swap != 0).map(x =>{ return {name: x.index , value: x.future_swap}})
+      })
+      let newMulti = this.multi;
+      this.multi = [...newMulti];
+    }
+    else {
+      let newMulti = this.multi.filter(x => x.name != 'future_swap');
+      this.multi = [...newMulti];
+    }
+  }
+
+  // those help to show the selected data
+  issues_maturity_fedsoma_fedinv_mbs_swapChange($event){
+    console.log($event);
+    let openChecked : Boolean = $event.checked;
+    if (openChecked){
+      this.multi.push({
+        name: 'issues_maturity_fedsoma_fedinv_mbs_swap',
+        series: this.dates.filter( x => x.issues_maturity_fedsoma_fedinv_mbs_swap != 0).map(x =>{ return {name: x.index , value: x.issues_maturity_fedsoma_fedinv_mbs_swap}})
+      })
+      let newMulti = this.multi;
+      this.multi = [...newMulti];
+    }
+    else {
+      let newMulti = this.multi.filter(x => x.name != 'issues_maturity_fedsoma_fedinv_mbs_swap');
+      this.multi = [...newMulti];
+    }
+  }  
 
 
 }

@@ -4,29 +4,91 @@
         Investal
     </h1>
 </div>
-<div class=content style="height: calc(100% - 70px); width: 100%; padding: 10px 20px;"> 
+<div class=content style="height: calc(100% - 70px); padding: 10px 20px;"> 
 
-    <div style="height: 200px; width: 100%;">
+    <div style="height: 100px; width: 100%; display: flex; ">
+
+        <h4 style="margin-left: 10px;">
+            הכנס תאריכים
+        </h4>
         
         <mat-form-field color="accent" appearance="fill">
-            <mat-label>Inherited calendar color</mat-label>
-            <input matInput [matDatepicker]="picker1">
+            <mat-label>תאריך התחלה</mat-label>
+            <input matInput [matDatepicker]="picker1"  (dateChange)="onChangeStartDate($event)" >
             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
             <mat-datepicker #picker1></mat-datepicker>
         </mat-form-field>
 
+        <mat-form-field color="accent" appearance="fill">
+            <mat-label>תאריך סיום</mat-label>
+            <input matInput [matDatepicker]="picker2"  (dateChange)="onChangeEndDate($event)" >
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+
+        <button mat-stroked-button [disabled]="startDate == undefined || endDate == undefined" (click)="getDates()" style="margin: 10px 10px;">
+            הרץ
+        </button>
+
     </div>
 
 
-    <div style="width: 500px; height: 500px;">
+    <mat-spinner *ngIf="isLoading" style="display: block; margin: auto; top: 20%;">
+
+    </mat-spinner>
+
+    <div *ngIf="!isLoading" style="width: 100%; height: 85%; background: white; border-radius: 10px;">
+
         
-        <ag-grid-angular
-            style="width: 100%; height: 100%;"
-            class="ag-theme-balham"
-            [rowData]="rowData"
-            [columnDefs]="columnDefs">
-        </ag-grid-angular>  
+        <!--
+             <ngx-charts-line-chart
+            [view]="view"
+            [scheme]="colorScheme"
+            [results]="multi"
+            [gradient]="gradient"
+            [xAxis]="showXAxis"
+            [yAxis]="showYAxis"
+            [legend]="showLegend"
+            [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel"
+            [xAxisLabel]="xAxisLabel"
+            [yAxisLabel]="yAxisLabel"
+            [autoScale]="autoScale"
+            [timeline]="timeline"
+            (select)="onSelect($event)">
+        </ngx-charts-line-chart>-->
+
+        <ngx-charts-line-chart *ngIf="dates"
+            [scheme]="colorScheme"
+            [results]="multi"
+            [gradient]="gradient"
+            [xAxis]="showXAxis"
+            [yAxis]="showYAxis"
+            [legend]="showLegend"
+            [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel"
+            [xAxisLabel]="xAxisLabel"
+            [yAxisLabel]="yAxisLabel"
+            [autoScale]="autoScale"
+            [timeline]="true"
+            >
+        </ngx-charts-line-chart>
+
+        <div style="width: 500px; height: 500px; float: left;">
+
+            <ag-grid-angular *ngIf="rowData != undefined"
+                style="width: 100%; height: 100%;"
+                class="ag-theme-balham"
+                [rowData]="rowData"
+                [columnDefs]="columnDefs">
+            </ag-grid-angular>  
+    
+        </div> 
 
     </div>
+
+    
+
+
 
 </div>

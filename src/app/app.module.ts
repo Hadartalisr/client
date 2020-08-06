@@ -16,6 +16,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatMomentDateModule } from "@angular/material-moment-adapter";
 import { NgxChartsModule } from '@swimlane/ngx-charts'
 import {LayoutModule, PanelBarModule, SplitterModule} from '@progress/kendo-angular-layout';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,8 @@ import {LayoutModule, PanelBarModule, SplitterModule} from '@progress/kendo-angu
     NgxChartsModule,
     PanelBarModule, 
     SplitterModule,
+    MatCheckboxModule,
+    FormsModule
   ],
   providers: [
     MatNativeDateModule,

@@ -39,6 +39,28 @@
 
     <div *ngIf="!isLoading" style="width: 100%; height: 85%; background: white; border-radius: 10px;">
 
+        <div style="width: calc(100% - 1500px); background-color: thistle;">
+            <!--<mat-checkbox  [(ngModel)]="issues_maturity_fedsoma_fedinv_mbs_swap">issues_maturity_fedsoma_fedinv_mbs_swap</mat-checkbox>-->
+        </div>
+
+        <div style="width: 1500px !important; height: 100%; float: left;">
+            <!--[xAxisTickFormatting]="dateTickFormatting.bind(this)"-->
+            <ngx-charts-line-chart *ngIf="dates != undefined"
+                [scheme]="colorScheme"
+                [results]="multi"
+                [gradient]="gradient"
+                [xAxis]="showXAxis"
+                [yAxis]="showYAxis"
+                [legend]="showLegend"
+                [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel"
+                [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="yAxisLabel"
+                [autoScale]="autoScale"
+                [timeline]="timeline"
+                >
+            </ngx-charts-line-chart>    
+        </div>
         
         <!--
              <ngx-charts-line-chart
@@ -58,22 +80,9 @@
             (select)="onSelect($event)">
         </ngx-charts-line-chart>-->
 
-        <ngx-charts-line-chart *ngIf="dates"
-            [scheme]="colorScheme"
-            [results]="multi"
-            [gradient]="gradient"
-            [xAxis]="showXAxis"
-            [yAxis]="showYAxis"
-            [legend]="showLegend"
-            [showXAxisLabel]="showXAxisLabel"
-            [showYAxisLabel]="showYAxisLabel"
-            [xAxisLabel]="xAxisLabel"
-            [yAxisLabel]="yAxisLabel"
-            [autoScale]="autoScale"
-            [timeline]="true"
-            >
-        </ngx-charts-line-chart>
+        
 
+        <!--
         <div style="width: 500px; height: 500px; float: left;">
 
             <ag-grid-angular *ngIf="rowData != undefined"
@@ -84,6 +93,7 @@
             </ag-grid-angular>  
     
         </div> 
+        -->
 
     </div>
 

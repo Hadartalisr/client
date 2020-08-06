@@ -9,13 +9,13 @@ import { MoneyServiceService } from './money-service.service';
 })
 export class AppComponent  implements OnInit{
   
-  systemName : string = "ine";
   startDate = undefined;
   endDate = undefined;
-  dates = undefined;
 
-  columnDefs; 
-  rowData = undefined;
+  dates;
+
+  //columnDefs; 
+  //rowData = undefined;
 
   isLoading : boolean = false;
 
@@ -34,21 +34,23 @@ export class AppComponent  implements OnInit{
   colorScheme = {
     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
   };
-  autoScale = false;
+  autoScale = true;
 
-
+  // attribures
+  issues_maturity_fedsoma_fedinv_mbs_swap : boolean = true;
 
   constructor(private MoneyService : MoneyServiceService){
   
   }
 
   ngOnInit(){
+    /*
     this.columnDefs = [
       {field: 'Datetime' },
       {field: 'is_legal_date' },
       {field: 'issues_maturity_fedsoma_fedinv_mbs_swap' },
       {field: 'weekday' }
-    ];
+    ];*/
   }
 
   onChangeStartDate($event){
@@ -59,25 +61,24 @@ export class AppComponent  implements OnInit{
     this.endDate = $event.value._i;
   }
 
-  ping(){
-    this.isLoading = true;
-    this.MoneyService.ping().subscribe(x => {
-      console.log(x);
-      this.isLoading = false;
-    })
+  dateTickFormatting(val : any) : string {
+    return this.dates[val].Datetime.toString();
+    //return " ";
   }
 
   getDates(){
     this.multi = [];
-    this.rowData = undefined
     this.isLoading = true;
-    this.MoneyService.getDates(this.startDate, this.endDate).subscribe(x => {
-      console.log(x)
-      x.forEach(element => {
+    this.MoneyService.getDates(this.startDate, this.endDate).subscribe(dates => {
+      dates = dates.getDatesResults;
+      console.log(dates)
+      /*dates.forEach(element => {
         element.Datetime = new Date(element.Datetime)
+      });*/
+      dates.forEach(element => {
+        element.Datetime = element.Datetime.toString();
       });
-      this.dates = x;
-      this.rowData = this.dates;
+      this.dates = dates;
       this.multi.push({
         name: 'issues_maturity_fedsoma_fedinv_mbs_swap',
         series: this.dates.map(x =>{ return {name: x.index , value: x.issues_maturity_fedsoma_fedinv_mbs_swap}})

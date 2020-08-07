@@ -29,11 +29,6 @@ export class AppComponent  implements OnInit{
   xAxisLabel = 'Datetime';
   showYAxisLabel = true;
   yAxisLabel = '$';
-  timeline = true;
-
-  colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
-  };
   autoScale = true;
 
 
@@ -42,28 +37,18 @@ export class AppComponent  implements OnInit{
   }
 
   ngOnInit(){
-    /*
-    this.columnDefs = [
-      {field: 'Datetime' },
-      {field: 'is_legal_date' },
-      {field: 'issues_maturity_fedsoma_fedinv_mbs_swap' },
-      {field: 'weekday' }
-    ];*/
   }
+
 
   onChangeStartDate($event){
     this.startDate = $event.value._i;
   }
 
+
   onChangeEndDate($event){
     this.endDate = $event.value._i;
   }
 
-  /*
-  dateTickFormatting(val : any) : string {
-    return val;
-    //return " ";
-  }*/
 
   ping(){
     this.MoneyService.ping().subscribe();
@@ -90,15 +75,31 @@ export class AppComponent  implements OnInit{
     })
   }
 
+
   attChange(key, $event){
     console.log($event);
     let myKey = key.key;
     let checked = $event.checked;
     if (checked){
-      this.multi.push({
-        name: myKey,
-        series: this.dates.filter( x => x[myKey] != 0).map((x, index) =>{ return {name: x.Datetime , value: x[myKey]}})
-      })
+      if (["Open","Close","High","Low"].indexOf(myKey) > -1){
+        let first = this.dates[0][myKey];
+        this.multi.push({
+          name: myKey,
+          series: this.dates.filter(x => x[myKey] != 0).map(x => { 
+            let value = (x[myKey] - first )* Math.pow(10, 8);
+            return {name: x.Datetime , value: value};
+          })
+        })      
+      }
+      else {
+        this.multi.push({
+          name: myKey,
+          series: this.dates.map(x => { 
+            let value = x[myKey];
+            return {name: x.Datetime , value: value}
+          })
+        })
+      }
       let newMulti = this.multi;
       this.multi = [...newMulti];
     }
@@ -107,7 +108,6 @@ export class AppComponent  implements OnInit{
       this.multi = [...newMulti];
     }
   }
-
 
 
 }

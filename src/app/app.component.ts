@@ -59,10 +59,11 @@ export class AppComponent  implements OnInit{
     this.endDate = $event.value._i;
   }
 
+  /*
   dateTickFormatting(val : any) : string {
-    return this.dates[val].Datetime.toString();
+    return val;
     //return " ";
-  }
+  }*/
 
   ping(){
     this.MoneyService.ping().subscribe();
@@ -75,15 +76,12 @@ export class AppComponent  implements OnInit{
     this.MoneyService.getDates(this.startDate, this.endDate).subscribe(x => {
       console.log(x)
       x.forEach(element => {
-        element.Datetime = new Date(element.Datetime)
+        let original_date = element.Datetime;
+        let new_date = new Date(original_date);
+        element.Datetime = new_date;
       });
+      x = x.filter(x => !isNaN(x.Datetime.getTime()));
       this.dates = x;
-      this.multi.push({
-        name: 'issues_maturity_fedsoma_fedinv_mbs_swap',
-        series: this.dates.filter( x => x.issues_maturity_fedsoma_fedinv_mbs_swap != 0).map(x =>{ return {name: x.index , value: x.issues_maturity_fedsoma_fedinv_mbs_swap}})
-      })
-      console.log(this.multi)
-
     }, error => {
 
     },
@@ -92,98 +90,24 @@ export class AppComponent  implements OnInit{
     })
   }
 
-
-  // those help to show the selected data
-  OpenChange($event){
+  attChange(key, $event){
     console.log($event);
-    let openChecked : Boolean = $event.checked;
-    if (openChecked){
+    let myKey = key.key;
+    let checked = $event.checked;
+    if (checked){
       this.multi.push({
-        name: 'Open',
-        series: this.dates.filter( x => x.Open != 0).map(x =>{ return {name: x.index , value: x.Open}})
+        name: myKey,
+        series: this.dates.filter( x => x[myKey] != 0).map((x, index) =>{ return {name: x.Datetime , value: x[myKey]}})
       })
       let newMulti = this.multi;
       this.multi = [...newMulti];
     }
     else {
-      let newMulti = this.multi.filter(x => x.name != 'Open');
+      let newMulti = this.multi.filter(x => x.name != myKey);
       this.multi = [...newMulti];
     }
   }
 
-
-  // those help to show the selected data
-  CloseChange($event){
-    console.log($event);
-    let openChecked : Boolean = $event.checked;
-    if (openChecked){
-      this.multi.push({
-        name: 'Close',
-        series: this.dates.filter( x => x.Close != 0).map(x =>{ return {name: x.index , value: x.Close}})
-      })
-      let newMulti = this.multi;
-      this.multi = [...newMulti];
-    }
-    else {
-      let newMulti = this.multi.filter(x => x.name != 'Close');
-      this.multi = [...newMulti];
-    }
-  }
-
-
-  // those help to show the selected data
-  swap_deltaChange($event){
-    console.log($event);
-    let openChecked : Boolean = $event.checked;
-    if (openChecked){
-      this.multi.push({
-        name: 'swap_delta',
-        series: this.dates.filter( x => x.swap_delta != 0).map(x =>{ return {name: x.index , value: x.swap_delta}})
-      })
-      let newMulti = this.multi;
-      this.multi = [...newMulti];
-    }
-    else {
-      let newMulti = this.multi.filter(x => x.name != 'swap_delta');
-      this.multi = [...newMulti];
-    }
-  }
-  
-  // those help to show the selected data
-  future_swapChange($event){
-    console.log($event);
-    let openChecked : Boolean = $event.checked;
-    if (openChecked){
-      this.multi.push({
-        name: 'future_swap',
-        series: this.dates.filter( x => x.future_swap != 0).map(x =>{ return {name: x.index , value: x.future_swap}})
-      })
-      let newMulti = this.multi;
-      this.multi = [...newMulti];
-    }
-    else {
-      let newMulti = this.multi.filter(x => x.name != 'future_swap');
-      this.multi = [...newMulti];
-    }
-  }
-
-  // those help to show the selected data
-  issues_maturity_fedsoma_fedinv_mbs_swapChange($event){
-    console.log($event);
-    let openChecked : Boolean = $event.checked;
-    if (openChecked){
-      this.multi.push({
-        name: 'issues_maturity_fedsoma_fedinv_mbs_swap',
-        series: this.dates.filter( x => x.issues_maturity_fedsoma_fedinv_mbs_swap != 0).map(x =>{ return {name: x.index , value: x.issues_maturity_fedsoma_fedinv_mbs_swap}})
-      })
-      let newMulti = this.multi;
-      this.multi = [...newMulti];
-    }
-    else {
-      let newMulti = this.multi.filter(x => x.name != 'issues_maturity_fedsoma_fedinv_mbs_swap');
-      this.multi = [...newMulti];
-    }
-  }  
 
 
 }

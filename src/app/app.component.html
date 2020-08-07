@@ -39,15 +39,19 @@
 
     <div *ngIf="!isLoading && dates != undefined" style="width: 100%; height: 85%; background: white; border-radius: 10px;">
 
-        <div style="width: calc(100% - 1500px); background-color: thistle;">
-            <mat-checkbox  (change)="issues_maturity_fedsoma_fedinv_mbs_swapChange($event)" [checked]="true">issues_maturity_fedsoma_fedinv_mbs_swap</mat-checkbox>
-            <mat-checkbox  (change)="OpenChange($event)" >Open</mat-checkbox>
+        <div style="width: calc(100% - 1500px); background-color: #eeeeee; overflow-y: scroll; overflow-x: hidden;float: right;">
+            <mat-checkbox *ngFor="let item of dates[0] | keyvalue" 
+                style="display: block;"
+                (change)="attChange(item, $event)" 
+                [checked]="false">{{item.key}}
+            </mat-checkbox>
+            <!--<mat-checkbox  (change)="OpenChange($event)" >Open</mat-checkbox>
             <mat-checkbox  (change)="CloseChange($event)" >Close</mat-checkbox>
             <mat-checkbox  (change)="swap_deltaChange($event)" >swap_delta</mat-checkbox>
-            <mat-checkbox  (change)="future_swapChange($event)" >future_swap</mat-checkbox>
+            <mat-checkbox  (change)="future_swapChange($event)" >future_swap</mat-checkbox>-->
         </div>
 
-        <div style="width: 1500px !important; height: 100%; float: left;">
+        <div style="width: 1400px !important; height: 100%; float: left;">
             <!--[xAxisTickFormatting]="dateTickFormatting.bind(this)"-->
             <ngx-charts-line-chart
                 [scheme]="colorScheme"

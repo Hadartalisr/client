@@ -86,8 +86,8 @@ export class AppComponent  implements OnInit{
         this.multi.push({
           name: myKey,
           series: this.dates.filter(x => x[myKey] != 0).map(x => { 
-            let value = (x[myKey] - first )* Math.pow(10, 8);
-            return {name: x.Datetime , value: value};
+            let value = (x[myKey] - first )* Math.pow(10, 9);
+            return {name: x.Datetime , value: value, tooltipText : x[myKey]};
           })
         })      
       }
@@ -96,7 +96,7 @@ export class AppComponent  implements OnInit{
           name: myKey,
           series: this.dates.map(x => { 
             let value = x[myKey];
-            return {name: x.Datetime , value: value}
+            return {name: x.Datetime , value: value };
           })
         })
       }
@@ -107,6 +107,12 @@ export class AppComponent  implements OnInit{
       let newMulti = this.multi.filter(x => x.name != myKey);
       this.multi = [...newMulti];
     }
+  }
+
+
+  getTooltip(m: any){
+    console.log(m);
+    return m.tooltipText;
   }
 
 

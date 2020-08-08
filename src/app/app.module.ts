@@ -18,10 +18,12 @@ import { NgxChartsModule } from '@swimlane/ngx-charts'
 import {LayoutModule, PanelBarModule, SplitterModule} from '@progress/kendo-angular-layout';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
+import { GraphTooltipComponent } from './graph-tooltip/graph-tooltip.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    GraphTooltipComponent
   ],
   imports: [
     BrowserModule,

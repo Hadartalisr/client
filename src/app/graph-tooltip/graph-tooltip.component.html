@@ -1,0 +1,9 @@
+<div *ngIf="!isLoading" style="padding: 5px;">
+    <h4>date : {{datetime}}</h4>
+    <div style="display: flex; direction: ltr;" *ngFor="let x of model">
+        <div style="display: inline-block; width:15px; height:15px; border-radius: 5px;" [ngStyle]="getColor(x)"></div>
+        <h4 style="display: inline-block; margin: 0px 10px;">{{x.series}}</h4>
+        <h4 style="display: inline-block; margin: 0px 10px;">{{x.displayName}}</h4>
+    </div>
+</div>
+

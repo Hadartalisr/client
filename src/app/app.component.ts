@@ -30,6 +30,11 @@ export class AppComponent  implements OnInit{
   showYAxisLabel = true;
   yAxisLabel = '$';
   autoScale = true;
+  colorScheme = {
+    domain: [
+      '#980000',	'#ff0000'	,'#ff9900',	'#ffff00', '#00ff00',	'#00ffff'	,'#4a86e8'	,'#0000ff',	'#9900ff'	,'#ff00ff'
+    ]
+  };
 
 
   constructor(private MoneyService : MoneyServiceService){
@@ -78,15 +83,35 @@ export class AppComponent  implements OnInit{
 
   attChange(key, $event){
     console.log($event);
-    let myKey = key.key;
+    let myKey = key;
     let checked = $event.checked;
     if (checked){
-      if (["Open","Close","High","Low"].indexOf(myKey) > -1){
-        let first = this.dates[0][myKey];
+      if (["Open","Close","High","Low","trading_min","trading_max"].indexOf(myKey) > -1){
+        let first = this.dates[0]["Open"];
         this.multi.push({
           name: myKey,
           series: this.dates.filter(x => x[myKey] != 0).map(x => { 
             let value = (x[myKey] - first )* Math.pow(10, 9);
+            return {name: x.Datetime , value: value, tooltipText : x[myKey]};
+          })
+        })      
+      }
+      else if (["future_start"].indexOf(myKey) > -1){
+        let first = this.dates[0]["Open"];
+        this.multi.push({
+          name: myKey,
+          series: this.dates.filter(x => x[myKey] != 0).map(x => { 
+            let value = (x[myKey] - first )* Math.pow(10, 9);
+            return {name: x.Datetime , value: value, tooltipText : x[myKey]};
+          })
+        })      
+      }
+      else if (["trading_percents","max_percent"].indexOf(myKey) > -1){
+        let first = this.dates[0]["Open"];
+        this.multi.push({
+          name: myKey,
+          series: this.dates.map(x => { 
+            let value = x[myKey] * Math.pow(10, 11);
             return {name: x.Datetime , value: value, tooltipText : x[myKey]};
           })
         })      

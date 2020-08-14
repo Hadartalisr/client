@@ -39,16 +39,16 @@
 
     <div *ngIf="!isLoading && dates != undefined" style="width: 100%; height: 85%; background: white; border-radius: 10px;">
 
-        <div style="width: calc(100% - 1500px); background-color: #eeeeee; overflow-y: scroll; overflow-x: hidden;float: right;">
+        <div style="width: calc(100% - 1500px); background-color: #eeeeee; overflow-y: hidden; overflow-x: hidden;float: right;">
             <mat-checkbox *ngFor="let item of dates[0] | keyvalue" 
                 style="display: block;"
-                (change)="attChange(item, $event)" 
+                (change)="attChange(item.key, $event)" 
                 [checked]="false">{{item.key}}
             </mat-checkbox>
-            <!--<mat-checkbox  (change)="OpenChange($event)" >Open</mat-checkbox>
-            <mat-checkbox  (change)="CloseChange($event)" >Close</mat-checkbox>
-            <mat-checkbox  (change)="swap_deltaChange($event)" >swap_delta</mat-checkbox>
-            <mat-checkbox  (change)="future_swapChange($event)" >future_swap</mat-checkbox>-->
+            <!--<mat-checkbox style="display: block;"
+                (change)="attChange(item, $event)" 
+                [checked]="false">18:00
+            </mat-checkbox>-->
         </div>
 
         <div style="width: 1400px !important; height: 100%; float: left;">
@@ -63,7 +63,8 @@
                 [showYAxisLabel]="showYAxisLabel"
                 [yAxisLabel]="yAxisLabel"
                 [autoScale]="autoScale"
-                [timeline]="true">
+                [timeline]="true"
+                [scheme]="colorScheme">
                 <ng-template #tooltipTemplate let-model="model">
                     <app-graph-tooltip [model]="model">
                     </app-graph-tooltip>

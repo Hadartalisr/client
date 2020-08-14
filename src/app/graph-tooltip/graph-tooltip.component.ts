@@ -25,7 +25,6 @@ export class GraphTooltipComponent implements OnInit {
 
   ngOnInit() {
     if (this.model.length > 0){
-      console.log(this.model);
       this.datetime = this.getDisplayDatetime(this.model[0].name);
       this.updateDisplayNames();
       this.isLoading = false;
@@ -38,7 +37,7 @@ export class GraphTooltipComponent implements OnInit {
 
   updateDisplayNames(){
     this.model.forEach(x => {
-      if (["Open", "Close", "High", "Low"].indexOf(x.series) > -1){
+      if (["Open", "Close", "High", "Low", "trading_percents", "trading_min","trading_max","max_percent"].indexOf(x.series) > -1){
         x.displayName = x.tooltipText;
       }
       else {

@@ -6,7 +6,7 @@
 </div>
 <div class=content style="height: calc(100% - 70px); padding: 10px 20px;"> 
 
-    <div style="height: 100px; width: 100%; display: flex; ">
+    <div style="height: 60px; width: 100%; display: flex; ">
 
         <h4 style="margin-left: 10px;">
             הכנס תאריכים
@@ -32,84 +32,52 @@
 
     </div>
 
+    <mat-tab-group style="height: 100%; width: 100%;" (selectedTabChange)="changeDataType($event)">
+        <mat-tab label="תצוגה גולמית של הנתונים">
+            <mat-spinner *ngIf="isLoading" style="display: block; margin: auto; top: 20%;"></mat-spinner>
+            <div *ngIf="!isLoading && dates != undefined" style="width: 100%; height: inherit; background: white; border-radius: 10px;">
+                <div style="width: calc(100% - 1500px); background-color: #eeeeee; overflow-y: scroll; overflow-x: hidden;float: right;">
+                    <mat-checkbox *ngFor="let item of dates[0] | keyvalue" 
+                        style="display: block;"
+                        (change)="attChange(item.key, $event)" 
+                        [checked]="false">{{item.key}}
+                    </mat-checkbox>
+                    <!--<mat-checkbox style="display: block;"
+                        (change)="attChange(item, $event)" 
+                        [checked]="false">18:00
+                    </mat-checkbox>-->
+                </div>
+                <div style="width: 1400px !important; height: inherit; float: left;">
+                    <!--[xAxisTickFormatting]="dateTickFormatting.bind(this)"-->
+                    <ngx-charts-line-chart
+                        [results]="multi"
+                        [gradient]="gradient"
+                        [xAxis]="showXAxis"
+                        [yAxis]="showYAxis"
+                        [legend]="showLegend"
+                        [showXAxisLabel]="false"
+                        [showYAxisLabel]="showYAxisLabel"
+                        [yAxisLabel]="yAxisLabel"
+                        [autoScale]="autoScale"
+                        [timeline]="true"
+                        [scheme]="colorScheme">
+                        <ng-template #tooltipTemplate let-model="model">
+                            <app-graph-tooltip [model]="model">
+                            </app-graph-tooltip>
+                        </ng-template>
+                        <ng-template #seriesTooltipTemplate let-model="model">
+                            <app-graph-tooltip [model]="model">
+                            </app-graph-tooltip>
+                        </ng-template>
+                    </ngx-charts-line-chart>    
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="סיכום ימי לונג">סיכום ימי לונג</mat-tab>
+    </mat-tab-group>
 
-    <mat-spinner *ngIf="isLoading" style="display: block; margin: auto; top: 20%;">
 
-    </mat-spinner>
-
-    <div *ngIf="!isLoading && dates != undefined" style="width: 100%; height: 85%; background: white; border-radius: 10px;">
-
-        <div style="width: calc(100% - 1500px); background-color: #eeeeee; overflow-y: hidden; overflow-x: hidden;float: right;">
-            <mat-checkbox *ngFor="let item of dates[0] | keyvalue" 
-                style="display: block;"
-                (change)="attChange(item.key, $event)" 
-                [checked]="false">{{item.key}}
-            </mat-checkbox>
-            <!--<mat-checkbox style="display: block;"
-                (change)="attChange(item, $event)" 
-                [checked]="false">18:00
-            </mat-checkbox>-->
-        </div>
-
-        <div style="width: 1400px !important; height: 100%; float: left;">
-            <!--[xAxisTickFormatting]="dateTickFormatting.bind(this)"-->
-            <ngx-charts-line-chart
-                [results]="multi"
-                [gradient]="gradient"
-                [xAxis]="showXAxis"
-                [yAxis]="showYAxis"
-                [legend]="showLegend"
-                [showXAxisLabel]="false"
-                [showYAxisLabel]="showYAxisLabel"
-                [yAxisLabel]="yAxisLabel"
-                [autoScale]="autoScale"
-                [timeline]="true"
-                [scheme]="colorScheme">
-                <ng-template #tooltipTemplate let-model="model">
-                    <app-graph-tooltip [model]="model">
-                    </app-graph-tooltip>
-                </ng-template>
-                <ng-template #seriesTooltipTemplate let-model="model">
-                    <app-graph-tooltip [model]="model">
-                    </app-graph-tooltip>
-                </ng-template>
-            </ngx-charts-line-chart>    
-        </div>
-        
-        <!--
-             <ngx-charts-line-chart
-            [view]="view"
-            [scheme]="colorScheme"
-            [results]="multi"
-            [gradient]="gradient"
-            [xAxis]="showXAxis"
-            [yAxis]="showYAxis"
-            [legend]="showLegend"
-            [showXAxisLabel]="showXAxisLabel"
-            [showYAxisLabel]="showYAxisLabel"
-            [xAxisLabel]="xAxisLabel"
-            [yAxisLabel]="yAxisLabel"
-            [autoScale]="autoScale"
-            [timeline]="timeline"
-            (select)="onSelect($event)">
-        </ngx-charts-line-chart>-->
-
-        
-
-        <!--
-        <div style="width: 500px; height: 500px; float: left;">
-
-            <ag-grid-angular *ngIf="rowData != undefined"
-                style="width: 100%; height: 100%;"
-                class="ag-theme-balham"
-                [rowData]="rowData"
-                [columnDefs]="columnDefs">
-            </ag-grid-angular>  
     
-        </div> 
-        -->
-
-    </div>
 
     
 

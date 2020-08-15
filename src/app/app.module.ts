@@ -19,6 +19,7 @@ import {LayoutModule, PanelBarModule, SplitterModule} from '@progress/kendo-angu
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { GraphTooltipComponent } from './graph-tooltip/graph-tooltip.component';
+import {MatTabsModule} from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { GraphTooltipComponent } from './graph-tooltip/graph-tooltip.component';
     PanelBarModule, 
     SplitterModule,
     MatCheckboxModule,
-    FormsModule
+    FormsModule,
+    MatTabsModule
   ],
   providers: [
     MatNativeDateModule,

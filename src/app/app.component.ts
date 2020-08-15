@@ -11,8 +11,9 @@ export class AppComponent  implements OnInit{
   
   startDate = undefined;
   endDate = undefined;
-
   dates;
+  
+  dataType : number = 0;
 
   //columnDefs; 
   //rowData = undefined;
@@ -42,6 +43,12 @@ export class AppComponent  implements OnInit{
   }
 
   ngOnInit(){
+  }
+
+
+  changeDataType($event){
+    console.log($event);
+    this.dataType = $event.index;
   }
 
 

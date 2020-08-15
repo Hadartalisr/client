@@ -187,6 +187,99 @@ export class AppComponent  implements OnInit{
     }
   }
 
+  transformLongDatetime(datetime: Date){
+    let day = 1;
+    let month = 2;
+    let year = 1;
+    let hour = datetime.getHours();
+    if(hour < 18){
+      day += 1;
+    }
+    return new Date(year, month, day, datetime.getHours(), datetime.getMinutes());
+  }
+
+  attLongChange(key, $event){
+    console.log($event);
+    let m = this.multi2 ;
+    let first = this.longDates[0]["Open"];
+    let mySeries = this.longDates;
+    let myKey = key;
+    let checked = $event.checked;
+    if (checked){
+      let i = 0;
+      let index = this.longDates[0].trading_index;
+      let newSeries = [];
+      while (i < this.longDates.length){
+        while (i < this.longDates.length && this.longDates[i].trading_index == index){
+          let dt = this.transformLongDatetime(this.longDates[i].Datetime);
+          newSeries.push({name: dt , value: this.longDates[i][myKey]})
+          i++;
+        } 
+        let newData = {name : myKey+" "+this.longDates[i-1].date , series : newSeries}
+        m.push(newData);
+        if(i < this.longDates.length){
+          index = this.longDates[i].trading_index;
+        }
+        newSeries = [];
+      }
+      /*
+
+      if (["Open","Close","High","Low","trading_min","trading_max"].indexOf(myKey) > -1){
+        
+        m.push({
+          name: myKey,
+          series: mySeries.filter(x => x[myKey] != 0).map(x => { 
+            let value = (x[myKey] - first )* Math.pow(10, 9);
+            return {name: x.Datetime , value: value, tooltipText : x[myKey]};
+          })
+        })      
+      }
+      else if (["future_start"].indexOf(myKey) > -1){
+        m.push({
+          name: myKey,
+          series: mySeries.filter(x => x[myKey] != 0).map(x => { 
+            let value = (x[myKey] - first )* Math.pow(10, 9);
+            return {name: x.Datetime , value: value, tooltipText : x[myKey]};
+          })
+        })      
+      }
+      else if (["trading_percents","max_percent"].indexOf(myKey) > -1){
+        m.push({
+          name: myKey,
+          series: mySeries.map(x => { 
+            let value = x[myKey] * Math.pow(10, 11);
+            return {name: x.Datetime , value: value, tooltipText : x[myKey]};
+          })
+        })      
+      }
+      else {
+        m.push({
+          name: myKey,
+          series: mySeries.map(x => { 
+            let value = x[myKey];
+            return {name: x.Datetime , value: value };
+          })
+        })
+      }*/
+      let newMulti = m;
+      if (this.dataType == 0){
+        this.multi = [...newMulti];
+      }
+      else if (this.dataType == 1){
+        this.multi2 = [...newMulti];
+      }
+    }
+    else {
+      let newMulti = m.filter(x => x.name.indexOf(myKey) == -1);
+      if (this.dataType == 0){
+        this.multi = [...newMulti];
+      }
+      else if (this.dataType == 1){
+        this.multi2 = [...newMulti];
+      }    
+    }
+  }
+
 
   getTooltip(m: any){
     console.log(m);

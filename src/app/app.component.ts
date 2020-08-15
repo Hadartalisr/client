@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MoneyServiceService } from './money-service.service';
+import { SeriesHorizontal } from '@swimlane/ngx-charts';
 
 
 @Component({
@@ -284,6 +285,34 @@ export class AppComponent  implements OnInit{
   getTooltip(m: any){
     console.log(m);
     return m.tooltipText;
+  }
+
+  onLongDateSelect($event){
+    console.log($event);
+    let newMulti = this.multi2.filter(x => x.name.indexOf($event) == -1);
+    this.multi2 = [...newMulti];
+  }
+
+  exportLongDatesToExcel(){
+    let copy : any[] = [];
+    for(let i = 0 ; i < this.multi2.length ; i ++){
+      let newObj = {name : this.multi2[i].name , series : []} ;
+      for(let j = 0 ; j < this.multi2[i].series.length ; j++){
+        newObj.series.push(this.multi2[i].series[j].name);
+      }
+      copy.push(newObj);
+    }
+    console.log(copy);
+    var csvData = this.MoneyService.ConvertToCSV(copy);
+    var a = document.createElement("a");
+    a.setAttribute('style', 'display:none;');
+    document.body.appendChild(a);
+    var blob = new Blob([csvData], { type: 'text/csv' });
+    var url= window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = 'longDates.csv';
+    a.click();
+    return 'success';
   }
 
 

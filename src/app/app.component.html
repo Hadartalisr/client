@@ -48,6 +48,10 @@
             (click)="getDates()" style="margin: 10px 10px;">
             הרץ
         </button>
+        <button *ngIf="dataType == 1 && !isLoading2 && longDates != undefined" mat-stroked-button
+            (click)="exportLongDatesToExcel()" style="margin: 10px 10px;">
+            יצא לאקסל
+        </button>
 
     </div>
 
@@ -109,7 +113,8 @@
                         [yAxisLabel]="yAxisLabel"
                         [autoScale]="autoScale"
                         [timeline]="true"
-                        [scheme]="colorScheme">
+                        [scheme]="colorScheme"
+                        (select)="onLongDateSelect($event)">
                         <ng-template #tooltipTemplate let-model="model">
                             <app-graph-tooltip [model]="model">
                             </app-graph-tooltip>

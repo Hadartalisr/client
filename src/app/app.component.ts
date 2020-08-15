@@ -11,6 +11,7 @@ export class AppComponent  implements OnInit{
   
   startDate = undefined;
   endDate = undefined;
+  amount = undefined;
   dates;
   
   dataType : number = 0;
@@ -37,10 +38,16 @@ export class AppComponent  implements OnInit{
     ]
   };
 
+  // for the second module
+  longDates;
+  multi2: any[] = [ ];
+  isLoading2 : boolean = false;
+
 
   constructor(private MoneyService : MoneyServiceService){
   
   }
+
 
   ngOnInit(){
   }
@@ -49,6 +56,12 @@ export class AppComponent  implements OnInit{
   changeDataType($event){
     console.log($event);
     this.dataType = $event.index;
+  }
+
+
+  formatLabel(value: number) {
+    return Math.round(value / 1000000000) + 'bn';
+    
   }
 
 
@@ -68,76 +81,109 @@ export class AppComponent  implements OnInit{
 
 
   getDates(){
-    this.multi = [];
-    this.isLoading = true;
-    this.MoneyService.getDates(this.startDate, this.endDate).subscribe(x => {
-      console.log(x)
-      x.forEach(element => {
-        let original_date = element.Datetime;
-        let new_date = new Date(original_date);
-        element.Datetime = new_date;
-      });
-      x = x.filter(x => !isNaN(x.Datetime.getTime()));
-      this.dates = x;
-    }, error => {
-
-    },
-    () => {
-      this.isLoading = false;
-    })
+    if(this.dataType == 0){ // golmi
+      this.multi = [];
+      this.isLoading = true;
+      this.MoneyService.getDates(this.startDate, this.endDate).subscribe(x => {
+        console.log(x)
+        x.forEach(element => {
+          let original_date = element.Datetime;
+          let new_date = new Date(original_date);
+          element.Datetime = new_date;
+        });
+        x = x.filter(x => !isNaN(x.Datetime.getTime()));
+        this.dates = x;
+      }, error => {
+  
+      },
+      () => {
+        this.isLoading = false;
+      })
+    }
+    else if (this.dataType == 1){ // long days
+      this.multi2 = [];
+      this.isLoading2 = true;
+      this.MoneyService.getLongDates(this.startDate, this.endDate, this.amount).subscribe(x => {
+        console.log(x)
+        x.forEach(element => {
+          let original_date = element.Datetime;
+          let new_date = new Date(original_date);
+          element.Datetime = new_date;
+        });
+        x = x.filter(x => !isNaN(x.Datetime.getTime()));
+        this.longDates = x;
+      }, error => {
+  
+      },
+      () => {
+        this.isLoading2 = false;
+      })
+    }
+    
   }
 
 
   attChange(key, $event){
     console.log($event);
+    let m = this.dataType == 0 ? this.multi : this.multi2 ;
+    let first = this.dataType == 0 ? this.dates[0]["Open"] : this.longDates[0]["Open"];
+    let mySeries = this.dataType == 0 ? this.dates : this.longDates;
     let myKey = key;
     let checked = $event.checked;
     if (checked){
       if (["Open","Close","High","Low","trading_min","trading_max"].indexOf(myKey) > -1){
-        let first = this.dates[0]["Open"];
-        this.multi.push({
+        
+        m.push({
           name: myKey,
-          series: this.dates.filter(x => x[myKey] != 0).map(x => { 
+          series: mySeries.filter(x => x[myKey] != 0).map(x => { 
             let value = (x[myKey] - first )* Math.pow(10, 9);
             return {name: x.Datetime , value: value, tooltipText : x[myKey]};
           })
         })      
       }
       else if (["future_start"].indexOf(myKey) > -1){
-        let first = this.dates[0]["Open"];
-        this.multi.push({
+        m.push({
           name: myKey,
-          series: this.dates.filter(x => x[myKey] != 0).map(x => { 
+          series: mySeries.filter(x => x[myKey] != 0).map(x => { 
             let value = (x[myKey] - first )* Math.pow(10, 9);
             return {name: x.Datetime , value: value, tooltipText : x[myKey]};
           })
         })      
       }
       else if (["trading_percents","max_percent"].indexOf(myKey) > -1){
-        let first = this.dates[0]["Open"];
-        this.multi.push({
+        m.push({
           name: myKey,
-          series: this.dates.map(x => { 
+          series: mySeries.map(x => { 
             let value = x[myKey] * Math.pow(10, 11);
             return {name: x.Datetime , value: value, tooltipText : x[myKey]};
           })
         })      
       }
       else {
-        this.multi.push({
+        m.push({
           name: myKey,
-          series: this.dates.map(x => { 
+          series: mySeries.map(x => { 
             let value = x[myKey];
             return {name: x.Datetime , value: value };
           })
         })
       }
-      let newMulti = this.multi;
-      this.multi = [...newMulti];
+      let newMulti = m;
+      if (this.dataType == 0){
+        this.multi = [...newMulti];
+      }
+      else if (this.dataType == 1){
+        this.multi2 = [...newMulti];
+      }
     }
     else {
-      let newMulti = this.multi.filter(x => x.name != myKey);
-      this.multi = [...newMulti];
+      let newMulti = m.filter(x => x.name != myKey);
+      if (this.dataType == 0){
+        this.multi = [...newMulti];
+      }
+      else if (this.dataType == 1){
+        this.multi2 = [...newMulti];
+      }    
     }
   }
 

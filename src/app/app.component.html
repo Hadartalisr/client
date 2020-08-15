@@ -19,14 +19,33 @@
             <mat-datepicker #picker1></mat-datepicker>
         </mat-form-field>
 
-        <mat-form-field color="accent" appearance="fill">
+        <mat-form-field color="accent" appearance="fill" style="margin-left: 10px;">
             <mat-label>תאריך סיום</mat-label>
             <input matInput [matDatepicker]="picker2"  (dateChange)="onChangeEndDate($event)" >
             <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
             <mat-datepicker #picker2></mat-datepicker>
         </mat-form-field>
 
-        <button mat-stroked-button [disabled]="startDate == undefined || endDate == undefined" (click)="getDates()" style="margin: 10px 10px;">
+        <div *ngIf="dataType == 1" style="margin-left: 10px; display: flex;">
+            <h4 style="margin-left: 10px;">
+                סופר דאטה מקסימאלי
+            </h4>
+            <mat-slider style="margin-top: 10px; width: 250px;"
+                thumbLabel
+                [(ngModel)]="amount"
+                [displayWith]="formatLabel"
+                tickInterval="1000000000"
+                min="-100000000000"
+                max="100000000000">
+            </mat-slider>
+        </div>
+        
+
+        
+
+
+        <button mat-stroked-button [disabled]="startDate == undefined || endDate == undefined || (dataType == 1 && !amount)" 
+            (click)="getDates()" style="margin: 10px 10px;">
             הרץ
         </button>
 
@@ -42,13 +61,8 @@
                         (change)="attChange(item.key, $event)" 
                         [checked]="false">{{item.key}}
                     </mat-checkbox>
-                    <!--<mat-checkbox style="display: block;"
-                        (change)="attChange(item, $event)" 
-                        [checked]="false">18:00
-                    </mat-checkbox>-->
                 </div>
                 <div style="width: 1400px !important; height: inherit; float: left;">
-                    <!--[xAxisTickFormatting]="dateTickFormatting.bind(this)"-->
                     <ngx-charts-line-chart
                         [results]="multi"
                         [gradient]="gradient"
@@ -73,7 +87,41 @@
                 </div>
             </div>
         </mat-tab>
-        <mat-tab label="סיכום ימי לונג">סיכום ימי לונג</mat-tab>
+        <mat-tab label="סיכום ימי לונג">
+            <mat-spinner *ngIf="isLoading2" style="display: block; margin: auto; top: 20%;"></mat-spinner>
+            <div *ngIf="!isLoading2 && longDates != undefined" style="width: 100%; height: inherit; background: white; border-radius: 10px;">            
+                <div style="width: calc(100% - 1500px); background-color: #eeeeee; overflow-y: scroll; overflow-x: hidden;float: right;">
+                    <mat-checkbox *ngFor="let item of longDates[0] | keyvalue" 
+                        style="display: block;"
+                        (change)="attChange(item.key, $event)" 
+                        [checked]="false">{{item.key}}
+                    </mat-checkbox>
+                </div>
+                <div style="width: 1400px !important; height: inherit; float: left;">
+                    <ngx-charts-line-chart
+                        [results]="multi2"
+                        [gradient]="gradient"
+                        [xAxis]="showXAxis"
+                        [yAxis]="showYAxis"
+                        [legend]="showLegend"
+                        [showXAxisLabel]="false"
+                        [showYAxisLabel]="showYAxisLabel"
+                        [yAxisLabel]="yAxisLabel"
+                        [autoScale]="autoScale"
+                        [timeline]="true"
+                        [scheme]="colorScheme">
+                        <ng-template #tooltipTemplate let-model="model">
+                            <app-graph-tooltip [model]="model">
+                            </app-graph-tooltip>
+                        </ng-template>
+                        <ng-template #seriesTooltipTemplate let-model="model">
+                            <app-graph-tooltip [model]="model">
+                            </app-graph-tooltip>
+                        </ng-template>
+                    </ngx-charts-line-chart>    
+                </div>
+            </div>
+        </mat-tab>
     </mat-tab-group>
 
 

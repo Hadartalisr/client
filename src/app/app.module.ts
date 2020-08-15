@@ -20,6 +20,12 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { GraphTooltipComponent } from './graph-tooltip/graph-tooltip.component';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatSliderModule} from '@angular/material/slider';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+import { GestureConfig } from '@angular/material';
+import 'hammerjs';
+
 
 @NgModule({
   declarations: [
@@ -46,10 +52,13 @@ import {MatTabsModule} from '@angular/material/tabs';
     SplitterModule,
     MatCheckboxModule,
     FormsModule,
-    MatTabsModule
+    MatTabsModule,
+    MatSlideToggleModule,
+    MatSliderModule
   ],
   providers: [
     MatNativeDateModule,
+    {provide: HAMMER_GESTURE_CONFIG, useClass: GestureConfig},
   ],
   bootstrap: [AppComponent]
 })

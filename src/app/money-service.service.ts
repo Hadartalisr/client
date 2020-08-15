@@ -45,5 +45,26 @@ export class MoneyServiceService {
   }
 
 
+  getLongDates(startDate, endDate, amount) : Observable<any> {
+    let start_day = startDate.date.toString();
+    start_day = start_day.length < 2 ? "0"+start_day : start_day;
+    let start_month = (startDate.month+1).toString();
+    start_month = start_month.length < 2 ? "0"+start_month : start_month;
+    let start_year = startDate.year.toString();
+    let end_day = endDate.date.toString();
+    end_day = end_day.length < 2 ? "0"+end_day : end_day;
+    let end_month = (endDate.month+1).toString();
+    end_month = end_month.length < 2 ? "0"+end_month : end_month;
+    let end_year = endDate.year.toString();
+    return this.http.get(this.config.server + 'getLongDates?startdate=' + start_year+start_month+start_day + 
+      '&enddate=' + end_year+end_month+end_day + '&amount=' + amount).pipe(
+      map((x : any) => {
+        console.log(x);
+        return x.getLongDatesResults;
+      })
+    )
+  }
+
+
 
 }

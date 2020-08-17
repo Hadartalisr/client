@@ -298,7 +298,7 @@ export class AppComponent  implements OnInit{
     for(let i = 0 ; i < this.multi2.length ; i ++){
       let newObj = {name : this.multi2[i].name , series : []} ;
       for(let j = 0 ; j < this.multi2[i].series.length ; j++){
-        newObj.series.push(this.multi2[i].series[j].name);
+        newObj.series.push(this.multi2[i].series[j].value);
       }
       copy.push(newObj);
     }

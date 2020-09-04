@@ -37,7 +37,7 @@ export class GraphTooltipComponent implements OnInit {
 
   updateDisplayNames(){
     this.model.forEach(x => {
-      if (["Open", "Close", "High", "Low", "trading_percents", "trading_min","trading_max","max_percent"].indexOf(x.series) > -1){
+      if (x.series.indexOf("snp") > -1 || x.series.indexOf("dax") > -1 || x.series.indexOf("ta35") > -1 || x.series.indexOf("usoil") > -1 ){
         x.displayName = x.tooltipText;
       }
       else {

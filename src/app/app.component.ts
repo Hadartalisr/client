@@ -13,7 +13,7 @@ export class AppComponent  implements OnInit{
   startDate = undefined;
   endDate = undefined;
   amount = undefined;
-  dates;
+  dates : any[];
   dataTitles = undefined;
   
   dataType : number = 0;
@@ -90,8 +90,9 @@ export class AppComponent  implements OnInit{
       this.MoneyService.getDates(this.startDate, this.endDate).subscribe(x => {
         console.log(x)
         x.forEach(element => {
-          let original_date = element.Datetime;
-          let new_date = new Date(original_date);
+          let original_date : string = element.Datetime;
+          let date_str = original_date.substring(0,10)+"T"+original_date.substring(11,13)+":00:00";
+          let new_date = new Date(date_str);
           element.Datetime = new_date;
         });
         x = x.filter(x => !isNaN(x.Datetime.getTime()));
@@ -111,6 +112,7 @@ export class AppComponent  implements OnInit{
         console.log(x)
         x.forEach(element => {
           let original_date = element.Datetime;
+          let date_str = original_date.substring(0,10)+"T"+original_date.substring(11,13)+":00:00";
           let new_date = new Date(original_date);
           element.Datetime = new_date;
         });
@@ -136,16 +138,48 @@ export class AppComponent  implements OnInit{
 
   attChange(key, $event){
     console.log($event);
-    let first = this.dates[0]["Open"] ;
-    let myKey = key;
+    let first = this.dates[0][key] ;
+    let myKey : string = key;
     let checked = $event.checked;
     if (checked){
-      if (["Open","Close","High","Low","trading_min","trading_max"].indexOf(myKey) > -1){
-        
+      if (myKey.indexOf("trading_percents")> -1 || myKey.indexOf("max_percent")> -1){
+        this.multi.push({
+          name: myKey,
+          series: this.dates.map(x => { 
+            let value = x[myKey] * Math.pow(10, 11);
+            return {name: x.Datetime , value: value, tooltipText : x[myKey]};
+          })
+        })      
+      }
+      else if (myKey.indexOf("usoil") > -1){
+        first = this.dates.find(x => x[myKey] != 0);
+        first = first == undefined ? 0 : first[myKey];
         this.multi.push({
           name: myKey,
           series: this.dates.filter(x => x[myKey] != 0).map(x => { 
-            let value = (x[myKey] - first )* Math.pow(10, 9);
+            let value = x[myKey] != 0 ? (x[myKey] - first )* Math.pow(10, 10) : 0;
+            return {name: x.Datetime , value: value, tooltipText : x[myKey]};
+          })
+        })      
+      }
+      else if (myKey.indexOf("snp") > -1 || myKey.indexOf("ta35") > -1){
+        first = this.dates.find(x => x[myKey] != 0);
+        first = first == undefined ? 0 : first[myKey];
+        this.multi.push({
+          name: myKey,
+          series: this.dates.filter(x => x[myKey] != 0).map(x => { 
+            let value = x[myKey] != 0 ? (x[myKey] - first )* Math.pow(10, 9) : 0;
+            return {name: x.Datetime , value: value, tooltipText : x[myKey]};
+          })
+        })      
+      }
+      else if (myKey.indexOf("dax") > -1 ){
+        first = this.dates.find(x => x[myKey] != 0);
+        first = first == undefined ? 0 : first[myKey];
+        this.multi.push({
+          name: myKey,
+          series: this.dates.filter(x => x[myKey] != 0).map(x => { 
+            let value = x[myKey] != 0 ? (x[myKey] - first )* Math.pow(10, 11) : 0;
             return {name: x.Datetime , value: value, tooltipText : x[myKey]};
           })
         })      
@@ -155,15 +189,6 @@ export class AppComponent  implements OnInit{
           name: myKey,
           series: this.dates.filter(x => x[myKey] != 0).map(x => { 
             let value = (x[myKey] - first )* Math.pow(10, 9);
-            return {name: x.Datetime , value: value, tooltipText : x[myKey]};
-          })
-        })      
-      }
-      else if (["trading_percents","max_percent"].indexOf(myKey) > -1){
-        this.multi.push({
-          name: myKey,
-          series: this.dates.map(x => { 
-            let value = x[myKey] * Math.pow(10, 11);
             return {name: x.Datetime , value: value, tooltipText : x[myKey]};
           })
         })      

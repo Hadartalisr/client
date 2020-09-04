@@ -24,6 +24,7 @@ import {MatSliderModule} from '@angular/material/slider';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { GestureConfig } from '@angular/material';
+import {MatTooltipModule} from '@angular/material/tooltip';
 import 'hammerjs';
 
 
@@ -54,7 +55,8 @@ import 'hammerjs';
     FormsModule,
     MatTabsModule,
     MatSlideToggleModule,
-    MatSliderModule
+    MatSliderModule,
+    MatTooltipModule
   ],
   providers: [
     MatNativeDateModule,

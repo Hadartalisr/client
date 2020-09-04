@@ -4,7 +4,7 @@
         Investal
     </h1>
 </div>
-<div class=content style="height: calc(100% - 70px); padding: 10px 20px;"> 
+<div class=content style="height: calc(100% - 75px); padding: 10px 20px; overflow: hidden;"> 
 
     <div style="height: 60px; width: 100%; display: flex; ">
 
@@ -55,18 +55,19 @@
 
     </div>
 
-    <mat-tab-group style="height: 100%; width: 100%;" (selectedTabChange)="changeDataType($event)">
+    <mat-tab-group style="height: calc(95% - 60px);width: 100%;" (selectedTabChange)="changeDataType($event)">
         <mat-tab label="תצוגה גולמית של הנתונים">
-            <mat-spinner *ngIf="isLoading" style="display: block; margin: auto; top: 20%;"></mat-spinner>
-            <div *ngIf="!isLoading && dates != undefined" style="width: 100%; height: inherit; background: white; border-radius: 10px;">
-                <div style="width: calc(100% - 1500px); background-color: #eeeeee; overflow-y: scroll; overflow-x: hidden;float: right;">
-                    <mat-checkbox *ngFor="let item of dates[0] | keyvalue" 
+            <mat-spinner *ngIf="isLoading" style="display: block; margin: auto; margin-top: 15%;"></mat-spinner>
+            <div *ngIf="!isLoading && dates != undefined && dataTitles != undefined" style="width: 100%; height: inherit; background: white; border-radius: 10px;">
+                <div style="height: inherit ;;width: 25%; background-color: #eeeeee; overflow-y: scroll !important; overflow-x: hidden;float: right;">
+                    <mat-checkbox *ngFor="let item of dataTitles" 
                         style="display: block;"
-                        (change)="attChange(item.key, $event)" 
-                        [checked]="false">{{item.key}}
+                        (change)="attChange(item, $event)" 
+                        [checked]="false"
+                        matTooltip="{{item}}">{{item}}
                     </mat-checkbox>
                 </div>
-                <div style="width: 1400px !important; height: inherit; float: left;">
+                <div style="width: 75%; height: inherit; float: left;">
                     <ngx-charts-line-chart
                         [results]="multi"
                         [gradient]="gradient"
@@ -94,14 +95,14 @@
         <mat-tab label="סיכום ימי לונג">
             <mat-spinner *ngIf="isLoading2" style="display: block; margin: auto; top: 20%;"></mat-spinner>
             <div *ngIf="!isLoading2 && longDates != undefined" style="width: 100%; height: inherit; background: white; border-radius: 10px;">            
-                <div style="width: calc(100% - 1500px); background-color: #eeeeee; overflow-y: scroll; overflow-x: hidden;float: right;">
+                <div style="height: inherit ;;width: 25%; background-color: #eeeeee; overflow-y: scroll !important; overflow-x: hidden;float: right;">
                     <mat-checkbox *ngFor="let item of longDates[0] | keyvalue" 
                         style="display: block;"
                         (change)="attLongChange(item.key, $event)" 
                         [checked]="false">{{item.key}}
                     </mat-checkbox>
                 </div>
-                <div style="width: 1400px !important; height: inherit; float: left;">
+                <div style="width: 75%; height: inherit; float: left;">
                     <ngx-charts-line-chart
                         [results]="multi2"
                         [gradient]="gradient"

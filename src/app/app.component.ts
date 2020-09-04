@@ -14,6 +14,7 @@ export class AppComponent  implements OnInit{
   endDate = undefined;
   amount = undefined;
   dates;
+  dataTitles = undefined;
   
   dataType : number = 0;
 
@@ -30,7 +31,7 @@ export class AppComponent  implements OnInit{
   showLegend = true;
   showXAxisLabel = true;
   xAxisLabel = 'Datetime';
-  showYAxisLabel = true;
+  showYAxisLabel = false; // true;
   yAxisLabel = '$';
   autoScale = true;
   colorScheme = {
@@ -82,6 +83,7 @@ export class AppComponent  implements OnInit{
 
 
   getDates(){
+    this.dataTitles = undefined;
     if(this.dataType == 0){ // golmi
       this.multi = [];
       this.isLoading = true;
@@ -94,6 +96,7 @@ export class AppComponent  implements OnInit{
         });
         x = x.filter(x => !isNaN(x.Datetime.getTime()));
         this.dates = x;
+        this.getDataTitles(this.dates[0]);
       }, error => {
   
       },
@@ -113,6 +116,7 @@ export class AppComponent  implements OnInit{
         });
         x = x.filter(x => !isNaN(x.Datetime.getTime()));
         this.longDates = x;
+        this.getDataTitles(this.longDates[0]);
       }, error => {
   
       },
@@ -120,56 +124,60 @@ export class AppComponent  implements OnInit{
         this.isLoading2 = false;
       })
     }
-    
+  }
+
+
+  getDataTitles(date : any){
+    let filterTitles = ["Datetime","Stock Splits", "date", "future_start", "index", "is_legal_date", "trading_index"];
+    let titles = Object.keys(date).filter(x => (filterTitles.indexOf(x) < 0));
+    this.dataTitles = titles;
   }
 
 
   attChange(key, $event){
     console.log($event);
-    let m = this.dataType == 0 ? this.multi : this.multi2 ;
-    let first = this.dataType == 0 ? this.dates[0]["Open"] : this.longDates[0]["Open"];
-    let mySeries = this.dataType == 0 ? this.dates : this.longDates;
+    let first = this.dates[0]["Open"] ;
     let myKey = key;
     let checked = $event.checked;
     if (checked){
       if (["Open","Close","High","Low","trading_min","trading_max"].indexOf(myKey) > -1){
         
-        m.push({
+        this.multi.push({
           name: myKey,
-          series: mySeries.filter(x => x[myKey] != 0).map(x => { 
+          series: this.dates.filter(x => x[myKey] != 0).map(x => { 
             let value = (x[myKey] - first )* Math.pow(10, 9);
             return {name: x.Datetime , value: value, tooltipText : x[myKey]};
           })
         })      
       }
       else if (["future_start"].indexOf(myKey) > -1){
-        m.push({
+        this.multi.push({
           name: myKey,
-          series: mySeries.filter(x => x[myKey] != 0).map(x => { 
+          series: this.dates.filter(x => x[myKey] != 0).map(x => { 
             let value = (x[myKey] - first )* Math.pow(10, 9);
             return {name: x.Datetime , value: value, tooltipText : x[myKey]};
           })
         })      
       }
       else if (["trading_percents","max_percent"].indexOf(myKey) > -1){
-        m.push({
+        this.multi.push({
           name: myKey,
-          series: mySeries.map(x => { 
+          series: this.dates.map(x => { 
             let value = x[myKey] * Math.pow(10, 11);
             return {name: x.Datetime , value: value, tooltipText : x[myKey]};
           })
         })      
       }
       else {
-        m.push({
+        this.multi.push({
           name: myKey,
-          series: mySeries.map(x => { 
+          series: this.dates.map(x => { 
             let value = x[myKey];
             return {name: x.Datetime , value: value };
           })
         })
       }
-      let newMulti = m;
+      let newMulti = this.multi;
       if (this.dataType == 0){
         this.multi = [...newMulti];
       }
@@ -178,7 +186,7 @@ export class AppComponent  implements OnInit{
       }
     }
     else {
-      let newMulti = m.filter(x => x.name != myKey);
+      let newMulti = this.multi.filter(x => x.name != myKey);
       if (this.dataType == 0){
         this.multi = [...newMulti];
       }

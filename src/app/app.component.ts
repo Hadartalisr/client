@@ -128,7 +128,7 @@ export class AppComponent  implements OnInit{
 
 
   getDataTitles(date : any){
-    let filterTitles = ["Datetime","Stock Splits", "date", "future_start", "index", "is_legal_date", "trading_index"];
+    let filterTitles = ["Datetime","Stock Splits", "date", "future_start", "index", "is_legal_date", "trading_index", "trading_min", "trading_max"];
     let titles = Object.keys(date).filter(x => (filterTitles.indexOf(x) < 0));
     this.dataTitles = titles;
   }

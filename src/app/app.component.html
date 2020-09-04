@@ -5,13 +5,12 @@
     </h1>
 </div>
 <div class=content style="height: calc(100% - 75px); padding: 10px 20px; overflow: hidden;"> 
-
     <div style="height: 60px; width: 100%; display: flex; ">
 
         <h4 style="margin-left: 10px;">
             הכנס תאריכים
         </h4>
-        
+
         <mat-form-field color="accent" appearance="fill">
             <mat-label>תאריך התחלה</mat-label>
             <input matInput [matDatepicker]="picker1"  (dateChange)="onChangeStartDate($event)" >
@@ -39,12 +38,12 @@
                 max="100000000000">
             </mat-slider>
         </div>
-        
-
-        
 
 
-        <button mat-stroked-button [disabled]="startDate == undefined || endDate == undefined || (dataType == 1 && !amount)" 
+
+
+
+        <button mat-stroked-button [disabled]="startDate == undefined || endDate == undefined || (dataType == 1 && !amount)"
             (click)="getDates()" style="margin: 10px 10px;">
             הרץ
         </button>
@@ -68,6 +67,7 @@
                     </mat-checkbox>
                 </div>
                 <div style="width: 75%; height: inherit; float: left;">
+
                     <ngx-charts-line-chart
                         [results]="multi"
                         [gradient]="gradient"
@@ -88,7 +88,7 @@
                             <app-graph-tooltip [model]="model">
                             </app-graph-tooltip>
                         </ng-template>
-                    </ngx-charts-line-chart>    
+                    </ngx-charts-line-chart>
                 </div>
             </div>
         </mat-tab>
@@ -98,10 +98,11 @@
                 <div style="height: inherit ;;width: 25%; background-color: #eeeeee; overflow-y: scroll !important; overflow-x: hidden;float: right;">
                     <mat-checkbox *ngFor="let item of longDates[0] | keyvalue" 
                         style="display: block;"
-                        (change)="attLongChange(item.key, $event)" 
+                        (change)="attLongChange(item.key, $event)"
                         [checked]="false">{{item.key}}
                     </mat-checkbox>
                 </div>
+
                 <div style="width: 75%; height: inherit; float: left;">
                     <ngx-charts-line-chart
                         [results]="multi2"
@@ -124,16 +125,16 @@
                             <app-graph-tooltip [model]="model">
                             </app-graph-tooltip>
                         </ng-template>
-                    </ngx-charts-line-chart>    
+                    </ngx-charts-line-chart>
                 </div>
             </div>
         </mat-tab>
     </mat-tab-group>
 
 
-    
 
-    
+
+
 
 
 
